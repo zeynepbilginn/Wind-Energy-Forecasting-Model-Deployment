@@ -28,10 +28,10 @@ class ProgressCallback(Callback):
 def load_data():
     dfs = []
     file_paths = [
-        "Data\Location1.csv",
-        "Data\Location2.csv",
-        "Data\Location3.csv",
-        "Data\Location4.csv"
+        "Data/Location1.csv",
+        "Data/Location2.csv",
+        "Data/Location3.csv",
+        "Data/Location4.csv"
     ]
     for file in file_paths:
         df = pd.read_csv(file, parse_dates=[0])
