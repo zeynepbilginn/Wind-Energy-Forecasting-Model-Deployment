@@ -122,7 +122,7 @@ turkish_month_names = {
     12: "Aralık"
 }
 
-locale.setlocale(locale.LC_TIME, "tr_TR.UTF-8")
+# locale.setlocale(locale.LC_TIME, "tr_TR.UTF-8")
 
 col2.subheader('Yıl ve Ay Seçin (İkinci Grafik)')
 selected_year = col2.selectbox('Lütfen bir yıl seçin:', df.index.year.unique(), key="selectbox_year")
