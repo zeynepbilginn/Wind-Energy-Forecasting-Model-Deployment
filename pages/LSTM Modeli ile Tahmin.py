@@ -52,16 +52,16 @@ def create_model(input_shape):
     model.compile(optimizer='adam', loss='mse')
     return model
 
-def plot_results(y_test, pred, n_results):
-    plt.figure(figsize=(14, 7))
-    plt.plot(y_test[:n_results], label='Actual', color='blue')
-    plt.plot(pred[:n_results], label='Predicted', color='red')
-    plt.bar(range(n_results), y_test[:n_results] - pred[:, 0][:n_results], label='Difference', color='gray')
-    plt.title('Comparison of Actual and Predicted Values')
-    plt.xlabel('Sample Index')
-    plt.ylabel('Power Output')
-    plt.legend()
-    st.pyplot(plt)
+# def plot_results(y_test, pred, n_results):
+#   plt.figure(figsize=(14, 7))
+#    plt.plot(y_test[:n_results], label='Actual', color='blue')
+#    plt.plot(pred[:n_results], label='Predicted', color='red')
+#    plt.bar(range(n_results), y_test[:n_results] - pred[:, 0][:n_results], label='Difference', color='gray')
+#    plt.title('Comparison of Actual and Predicted Values')
+#    plt.xlabel('Sample Index')
+#    plt.ylabel('Power Output')
+#    plt.legend()
+#    st.pyplot(plt)
 
 def main():
     st.title('LSTM ile Enerji Tahmini 🔋')
@@ -103,7 +103,7 @@ def main():
         # st.write(f"MSE: {mse}, MAE: {mae}, R2: {r2}")
 
         n_results = st.number_input('Enter the number of results to display:', min_value=1, max_value=len(y_test), value=10)
-        plot_results(y_test, pred, n_results)
+        # plot_results(y_test, pred, n_results)
 
 if __name__ == '__main__':
     main()
