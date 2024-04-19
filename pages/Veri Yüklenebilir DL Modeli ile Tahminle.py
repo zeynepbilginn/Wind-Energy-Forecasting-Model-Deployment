@@ -81,8 +81,8 @@ def main():
 
             train_mae = mean_absolute_error(scaler.inverse_transform(Y_train), train_predict)
             test_mae = mean_absolute_error(scaler.inverse_transform(Y_test), test_predict)
-            st.write(f"Training MAE: {train_mae}")
-            st.write(f"Test MAE: {test_mae}")
+           # st.write(f"Training MAE: {train_mae}")
+           # st.write(f"Test MAE: {test_mae}")
 
         hours_to_predict = st.number_input("Enter the number of hours to predict:", min_value=1, max_value=48, value=24)
         if st.button('Forecast Future'):
