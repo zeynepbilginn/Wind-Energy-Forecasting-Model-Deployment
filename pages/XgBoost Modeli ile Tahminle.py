@@ -73,6 +73,6 @@ if st.button('Tahmin Et'):
 
         # Modelin doğruluğunu hesapla
         mae = mean_absolute_error(real_values, predictions['Predicted Power'])
-        st.write(f'Ortalama Mutlak Hata (MAE): {mae}')
+        # st.write(f'Ortalama Mutlak Hata (MAE): {mae}')
 
 # Profit Model
