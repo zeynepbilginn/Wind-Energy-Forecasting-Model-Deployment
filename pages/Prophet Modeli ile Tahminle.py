@@ -80,7 +80,7 @@ if uploaded_file is not None:
             forecast = forecast.set_index('ds')[['yhat']].join(df_prophet.set_index('ds'))
             forecast.dropna(inplace=True)
             mae = mean_absolute_error(forecast['y'], forecast['yhat'])
-            st.write(f"The MAE score is: {mae}")
+            # st.write(f"The MAE score is: {mae}")
         elif option == 'Show Forecast Data':
             forecast = make_predictions(model, periods)
             st.dataframe(show_forecast_data(forecast, periods))
