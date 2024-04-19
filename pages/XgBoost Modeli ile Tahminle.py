@@ -1,78 +1,125 @@
-import streamlit as st
-import pandas as pd
 import numpy as np
-import joblib
+import pandas as pd
+import xgboost as xgb
 from datetime import datetime, timedelta
-
-from xgboost import XGBRegressor
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-
-import contextlib
-from prophet import Prophet
-import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import joblib
+import streamlit as st
+import warnings
 
-st.set_page_config(page_title="Energy Forecasting with XgBoost", page_icon="🔋")
+warnings.filterwarnings('ignore')
+pd.set_option('display.max_columns', 100)
 
-st.sidebar.markdown("<div style='position: fixed; top: 0; padding: 20px;'></div>", unsafe_allow_html=True)
-st.sidebar.image("img/BZDAY.jpg", use_column_width=True)
-
-
-class XGBRegressorWithEarlyStopping(XGBRegressor):
-    def fit(self, X, y, **kwargs):
-        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-        eval_set = [(X_val, y_val)]
-        super().fit(X_train, y_train, eval_set=eval_set, early_stopping_rounds=5, verbose=True, **kwargs)
-        return self
-
-
-# Modelin yüklendiği yer
-model_path = r'power_forecasting_pipeline7.pkl'
-model = joblib.load(model_path)
-
+def load_data(feature_file_path, power_file_path):
+    df_feature = pd.read_csv(feature_file_path, parse_dates=['Time'], index_col='Time')
+    df_power = pd.read_csv(power_file_path, parse_dates=['Time'], index_col='Time')
+    return df_feature, df_power
 
 def create_features(df):
-    df['temperature_2m'] = np.random.normal(loc=20, scale=5, size=len(df))
-    df['relativehumidity_2m'] = np.random.normal(loc=70, scale=10, size=len(df))
-    df['dewpoint_2m'] = np.random.normal(loc=10, scale=3, size=len(df))
-    df['windspeed_10m'] = np.random.normal(loc=10, scale=3, size=len(df))  # Dummy data
-    df['windspeed_100m'] = np.random.normal(loc=15, scale=5, size=len(df))  # Dummy data
-    df['winddirection_10m'] = np.random.choice(range(360), size=len(df))
-    df['winddirection_100m'] = np.random.choice(range(360), size=len(df))
-    df['windgusts_10m'] = np.random.normal(loc=5, scale=2, size=len(df))  # Dummy data
-    return df[['temperature_2m', 'relativehumidity_2m', 'dewpoint_2m', 'windspeed_10m',
-               'windspeed_100m', 'winddirection_10m', 'winddirection_100m', 'windgusts_10m']]
+    df['hour'] = df.index.hour
+    df['dayofweek'] = df.index.dayofweek
+    df['quarter'] = df.index.quarter
+    df['month'] = df.index.month
+    df['year'] = df.index.year
+    df['dayofyear'] = df.index.dayofyear
+    df['dayofmonth'] = df.index.day
+    return df
+
+def prepare_data(df_feature, df_power):
+    df_features = create_features(df_feature)
+    df_combined = pd.concat([df_features, df_power], axis=1).dropna()
+    X = df_combined.drop('Power', axis=1)
+    y = df_combined['Power']
+    return X, y
+
+def train_model(X, y):
+    scaler = StandardScaler()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    model = xgb.XGBRegressor(n_estimators=1000, learning_rate=0.05)
+    model.fit(X_train_scaled, y_train, early_stopping_rounds=5, eval_set=[(X_test_scaled, y_test)], verbose=False)
+    y_pred = model.predict(X_test_scaled)
+    mae = mean_absolute_error(y_test, y_pred)
+    return model, scaler, X_train.columns, X_test, y_test, y_pred, mae
+
+@st.experimental_singleton
+def load_model():
+    feature_path = r'Data/bu1 (2)'
+    power_path = r'Data/your_new_file_path'
+    df_feature, df_power = load_data(feature_path, power_path)
+    X, y = prepare_data(df_feature, df_power)
+    model, scaler, columns, X_test, y_test, y_pred, mae = train_model(X, y)
+    return model, scaler, columns, X_test, y_test, y_pred, mae
+
+def main():
+    st.title('Power Prediction Model')
+    feature_file_path = r'Data/bu1 (2)'
+    power_file_path = r'Data/your_new_file_path'
+    model, scaler, columns, X_test, y_test, y_pred, mae = load_model()
+
+    # Allowed dates for predictions
+    allowed_dates = [datetime(2022, 1, i).date() for i in range(1, 6)]
+
+    # Date selector for predictions
+    selected_date = st.date_input("Select a date for prediction", value=datetime(2022, 1, 1), min_value=min(allowed_dates), max_value=max(allowed_dates))
+
+    # Show test prediction errors and calculate MAE
+    if st.button('Show Test Prediction Errors'):
+        if selected_date in allowed_dates:
+            st.write(f"Mean Absolute Error (MAE): {mae:.4f}")
+        else:
+            st.error("Selected date is not allowed. Please select another date.")
+
+    # Predict future hours
+    hours_to_predict = st.number_input("Enter the number of hours to predict:", min_value=1, max_value=48, value=24)
+
+    if st.button('Predict Future Hours'):
+        if selected_date in allowed_dates:
+            _, df_power = load_data(feature_file_path, power_file_path)
+            last_date = df_power.index[-1]  # Last timestamp in the dataset
+            predict_start = last_date + timedelta(hours=1)
+            future_datetimes = pd.date_range(start=predict_start, periods=hours_to_predict, freq='H')
+            future_df = pd.DataFrame(index=future_datetimes)
+            future_df = create_features(future_df)
+            future_features = future_df.reindex(columns=columns, fill_value=0)
+            future_features_scaled = scaler.transform(future_features)
+            predictions = model.predict(future_features_scaled)
+            predictions_df = pd.DataFrame(predictions, index=future_datetimes, columns=['Predicted Power'])
+            st.dataframe(predictions_df)  # Display predictions in a table
+
+            # Plotting
+            fig, ax = plt.subplots()
+            ax.plot(future_datetimes, predictions, label='Predicted Power')
+            ax.set_title('Future Power Predictions')
+            ax.set_xlabel('Datetime')
+            ax.set_ylabel('Power')
+            ax.legend()
+            locator = mdates.AutoDateLocator()
+            formatter = mdates.ConciseDateFormatter(locator)
+            ax.xaxis.set_major_locator(locator)
+            ax.xaxis.set_major_formatter(formatter)
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
+
+            # Download predictions
+            csv = predictions_df.to_csv(index=True)
+            st.download_button(
+                label="Download predictions as CSV",
+                data=csv,
+                file_name='predictions.csv',
+                mime='text/csv',
+            )
+        else:
+            st.error("Selected date is not allowed for future hour predictions. Please select another date.")
+
+if __name__ == "__main__":
+    main()
 
 
-def predict_future_hours(start_date, hours):
-    start_datetime = pd.to_datetime(start_date)
-    future_datetimes = pd.date_range(start=start_datetime, periods=hours + 1, freq='H')[1:]
-    future_df = pd.DataFrame(index=future_datetimes)
-    future_features = create_features(future_df)
-    predictions = model.predict(future_features)
-    predictions_df = pd.DataFrame(predictions, index=future_datetimes, columns=['Predicted Power'])
-    return predictions_df
 
-
-st.title('XgBoost ile Enerji Tahmini 🔋')
-
-# Tarih seçme bileşeni ekleme
-selected_date = st.date_input('Tahmin için tarih seçin lütfen:', value=datetime.today())
-
-# Saat sayısı giriş bileşeni
-hours = st.number_input('Kaç saatlik tahmin istiyorsunuz?', min_value=1, max_value=72, value=24)
-
-if st.button('Tahmin Et'):
-    predictions = predict_future_hours(selected_date, hours)
-    st.write(predictions)
-    # st.line_chart(predictions)
-
-    if predictions is not None:
-
-        real_values = pd.Series([0] * len(predictions.index), index=predictions.index)
-
-        # Modelin doğruluğunu hesapla
-        # mae = mean_absolute_error(real_values, predictions['Predicted Power'])
-        # st.write(f'Ortalama Mutlak Hata (MAE): {mae}')
-
-# Profit Model
+#streamlit run yenixcbootsd.py
