@@ -72,7 +72,7 @@ if st.button('Tahmin Et'):
         real_values = pd.Series([0] * len(predictions.index), index=predictions.index)
 
         # Modelin doğruluğunu hesapla
-        mae = mean_absolute_error(real_values, predictions['Predicted Power'])
-        st.write(f'Ortalama Mutlak Hata (MAE): {mae}')
+       # mae = mean_absolute_error(real_values, predictions['Predicted Power'])
+       # st.write(f'Ortalama Mutlak Hata (MAE): {mae}')
 
 # Profit Model
