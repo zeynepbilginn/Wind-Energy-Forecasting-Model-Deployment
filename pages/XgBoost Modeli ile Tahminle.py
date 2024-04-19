@@ -65,7 +65,7 @@ hours = st.number_input('Kaç saatlik tahmin istiyorsunuz?', min_value=1, max_va
 if st.button('Tahmin Et'):
     predictions = predict_future_hours(selected_date, hours)
     st.write(predictions)
-    st.line_chart(predictions)
+    # st.line_chart(predictions)
 
     if predictions is not None:
 
