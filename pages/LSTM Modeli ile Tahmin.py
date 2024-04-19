@@ -100,7 +100,7 @@ def main():
         mse = mean_squared_error(y_test, pred)
         mae = mean_absolute_error(y_test, pred)
         r2 = r2_score(y_test, pred)
-        st.write(f"MSE: {mse}, MAE: {mae}, R2: {r2}")
+        # st.write(f"MSE: {mse}, MAE: {mae}, R2: {r2}")
 
         n_results = st.number_input('Enter the number of results to display:', min_value=1, max_value=len(y_test), value=10)
         plot_results(y_test, pred, n_results)
