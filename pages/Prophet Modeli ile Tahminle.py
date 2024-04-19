@@ -48,9 +48,9 @@ def show_forecast_data(forecast, last_n=5):
 
 # Streamlit kullanıcı arayüzü
 st.title('Prophet ile Enerji Tahmini 🔋')
-st.write("Lütfen Time ve Date sutunlarını içeren verinizi yükleyiniz:")
+
 # Dosya yükleyici
-uploaded_file = st.file_uploader("Dosya seçin lütfen")
+uploaded_file = st.file_uploader("Lütfen Time ve Date sutunlarını içeren verinizi yükleyiniz:")
 if uploaded_file is not None:
     df_prophet = load_data(uploaded_file)
     model = train_model(df_prophet)
