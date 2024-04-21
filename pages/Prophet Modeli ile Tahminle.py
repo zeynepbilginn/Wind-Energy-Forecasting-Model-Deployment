@@ -44,7 +44,7 @@ def show_forecast_data(forecast, last_n=5):
 
 
 # Streamlit user interface
-st.title('Prophet Modeli ile Rüzgar Enerjisi Tahmini')
+st.title('Prophet Modeli ile Enerji Tahmini 🔋')
 
 # File uploader
 uploaded_file = st.file_uploader("Lütfen 'Time' ve 'Power' sutünları içeren veriseti yükleyiniz:")
