@@ -46,7 +46,7 @@ def predict_future_hours(model, scaler, data, look_back, hours):
 def main():
     st.title('LSTM Modeli ile Enerji Tahmini 🔋')
 
-    uploaded_file = st.file_uploader("Lütfen Time ve Power sutünlarını içeren verinizi yükleyiniz:")
+    uploaded_file = st.file_uploader("Lütfen "Time" ve "Power" sutünlarını içeren veriseti yükleyiniz:")
     if uploaded_file is not None:
         df = load_and_preprocess_data(uploaded_file)
         st.write(df.head())
