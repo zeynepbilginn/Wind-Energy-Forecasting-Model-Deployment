@@ -44,10 +44,10 @@ def show_forecast_data(forecast, last_n=5):
 
 
 # Streamlit user interface
-st.title('Power Forecast Using Prophet')
+st.title('Prophet Modeli ile Rüzgar Enerjisi Tahmini')
 
 # File uploader
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Lütfen "Time" ve "Power" içeren bir veriseti yükleyiniz:")
 if uploaded_file is not None:
     df_prophet = load_data(uploaded_file)
     model = train_model(df_prophet)
