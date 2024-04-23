@@ -2,7 +2,7 @@
 This project is developed to make accurate and reliable predictions for wind energy production, which is crucial for optimizing renewable energy resources and ensuring sustainable energy supply. To achieve this goal, four distinct models have been employed: XGBoost, LSTM (Long Short-Term Memory), Prophet, and loadable LSTM. Each model offers unique capabilities and advantages, allowing for comprehensive analysis and prediction of wind energy generation patterns. By leveraging the strengths of these diverse models, this project aims to provide valuable insights into wind energy forecasting, facilitating better decision-making processes for energy stakeholders, policymakers, and environmental advocates.
 
 # Roadmap
-<img src="img/Roadmap.jpg" width="40%">
+<img src="img/Roadmap.jpg" width="30%">
 
 ## Description of Dataset
 The dataset used in this project contains hourly observations related to wind energy production. Key variables include time, temperature, humidity, wind speed, and power production.
