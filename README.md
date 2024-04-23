@@ -2,7 +2,7 @@
 
 This project is developed to make predictions for wind energy production. Four different models have been utilized: XGBoost, LSTM, Prophet, and loadable LSTM.
 # Roadmap
-![Roadmap](img/RoadMap.jpg)
+![Roadmap](img/Roadmap.jpg)
 
 ## Introduction to Models
 
