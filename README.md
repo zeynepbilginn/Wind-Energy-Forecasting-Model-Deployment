@@ -9,20 +9,20 @@ This project is developed to make predictions for wind energy production. Four d
 ### XGBoost Model
 XGBoost is a type of Gradient Boosting algorithm. This model is used to model complex relationships and make predictions. It is a suitable choice to consider various variables like weather conditions in wind energy prediction.
 
-### LSTM Model
+## LSTM Model
 LSTM (Long Short-Term Memory) is a frequently used deep learning model for modeling sequential data like time series. In this project, the LSTM model has been adapted to make wind energy predictions using time and power columns. Additionally, users can upload their own data and add customized LSTM models for flexibility.
 
-### Prophet Model
+## Prophet Model
 Prophet is a time series forecasting tool developed by Facebook. It automatically handles seasonality, holiday effects, and trends. Due to these features, Prophet model is a simple and effective option for wind energy prediction.
 
 ## Description of Dataset
 
 The dataset used in this project contains hourly observations related to wind energy production. Key variables include time, temperature, humidity, wind speed, and power production.
 
-### Dataset Summary
+## Dataset Summary
 The dataset represents a detailed hourly record since January 2, 2017. It is a compilation of meteorological observations collected from our operational fields and wind energy production data. It showcases the relationship between various weather conditions and wind energy production.
 
-### Column Names and Descriptions
+## Column Names and Descriptions
 - **Temperature (temperature_2m)**: Represents air temperature in Celsius degrees.
 - **Humidity (relativehumidity_2m)**: Represents air humidity as a percentage.
 - **Wind Direction (winddirection_10m)**: Represents wind direction at 10 meters height in degrees.
