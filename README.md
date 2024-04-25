@@ -1,12 +1,10 @@
 # Wind Energy Forecasting Project
-![ ](https://github.com/zeynepbilginn/Wind-Energy-Forecasting-Model-Deployment/blob/main/Streamlit%20(9).gif)
-![ ](https://github.com/zeynepbilginn/Wind-Energy-Forecasting-Model-Deployment/blob/main/Streamlit%20(8).gif)
-
-This project is developed to make accurate and reliable predictions for wind energy production, which is crucial for optimizing renewable energy resources and ensuring sustainable energy supply. To achieve this goal, four distinct models have been employed: XGBoost, LSTM (Long Short-Term Memory), Prophet, and loadable LSTM. Each model offers unique capabilities and advantages, allowing for comprehensive analysis and prediction of wind energy generation patterns. By leveraging the strengths of these diverse models, this project aims to provide valuable insights into wind energy forecasting, facilitating better decision-making processes for energy stakeholders, policymakers, and environmental advocates.
 ![ ](https://github.com/zeynepbilginn/Wind-Energy-Forecasting-Model-Deployment/blob/main/Streamlit%20(7).gif)
+This project is developed to make accurate and reliable predictions for wind energy production, which is crucial for optimizing renewable energy resources and ensuring sustainable energy supply. To achieve this goal, four distinct models have been employed: XGBoost, LSTM (Long Short-Term Memory), Prophet, and loadable LSTM. Each model offers unique capabilities and advantages, allowing for comprehensive analysis and prediction of wind energy generation patterns. By leveraging the strengths of these diverse models, this project aims to provide valuable insights into wind energy forecasting, facilitating better decision-making processes for energy stakeholders, policymakers, and environmental advocates.
+
 ## Description of Dataset
 The dataset used in this project contains hourly observations related to wind energy production. Key variables include time, temperature, humidity, wind speed, and power production.
-![ ](https://github.com/zeynepbilginn/Wind-Energy-Forecasting-Model-Deployment/blob/main/Streamlit%20(3).gif)
+
 ## Dataset Summary
 The dataset represents a detailed hourly record since January 2, 2017. It is a compilation of meteorological observations collected from our operational fields and wind energy production data. It showcases the relationship between various weather conditions and wind energy production.
 
