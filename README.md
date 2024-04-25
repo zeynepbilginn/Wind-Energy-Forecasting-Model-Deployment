@@ -35,8 +35,8 @@ LSTM (Long Short-Term Memory) is a frequently used deep learning model for model
 
 <img src="img/WhatsApp Image 2024-04-23 at 22.54.08.jpeg" width="60%">
 
--**Ortalama Kare Hata (MSE)**: 0.031422247617889164
--**Ortalama Mutlak Hata (MAE)**: 0.13481114434096347
+-**Ortalama Kare Hata (MSE)**: 0.031422247617889164  
+-**Ortalama Mutlak Hata (MAE)**: 0.13481114434096347  
 -**R-Kare (R2)**: 0.5279354929999542
 
 ## Prophet Model
